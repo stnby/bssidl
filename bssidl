@@ -9,7 +9,7 @@ R='\033[1;31m'
 G='\033[1;32m'
 
 if [ -z "$1" ]; then
-  echo -e "${R}[!]${N} Usage: macl <BSSID>"
+  echo -e "${R}[!]${N} Usage: bssidl <BSSID>"
   exit
 fi
 
