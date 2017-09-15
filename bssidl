@@ -1,0 +1,40 @@
+#!/bin/bash
+#By: Stnby
+#1.0v
+#Install these packages: curl jq
+
+#Colors
+N='\033[0m'
+R='\033[1;31m'
+G='\033[1;32m'
+
+if [ -z "$1" ]; then
+  echo -e "${R}[!]${N} Usage: macl <BSSID>"
+  exit
+fi
+
+#http://maps.googleapis.com/maps/api/geocode/json?latlng=50.79300188968,-1.0841525968&sensor=true
+#http://maps.googleapis.com/maps/api/geocode/json?latlng=lat,lng&sensor=true
+#data=$(curl -s "http://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}")
+
+#Getting data
+echo -e "${G}[+]${N} Getting data...\n"
+data=$(curl -s "https://api.mylnikov.org/wifi?bssid=$1")
+lat=$(echo $data | jq '.data.lat')
+lon=$(echo $data | jq '.data.lon')
+
+#if [[ $lat == 'null' ]]; then
+#  echo -e "${R}[!]${N} Invalid BSSID."
+#  exit
+#fi
+
+data=$(curl -s "http://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}")
+address=$(echo $data | jq '.display_name')
+
+echo -e "${G}[+]${N} BSSID:     $1"
+echo -e "${G}[+]${N} Latitude:  $lat"
+echo -e "${G}[+]${N} Longitude: $lon"
+echo -e "${G}[+]${N} Address:   $address"
+
+
+echo -e "\n${G}[+]${N} Done..."
